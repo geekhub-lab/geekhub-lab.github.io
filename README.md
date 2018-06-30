@@ -6,12 +6,17 @@ http://geekhub.co.kr/
 
 ## Setup
 
+You should have [yarn](https://yarnpkg.com/lang/en/) to setup.
+
 ```
 # Clone
 git clone -b vuepress git@github.com:geekhub-lab/geekhub-lab.github.io
 
 # Install packages
 yarn install
+
+# Run dev server
+yarn docs:dev
 ```
 
 ## Deployment
