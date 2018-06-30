@@ -1,6 +1,6 @@
-# Geekhub Blog Workspace
+# geekhub-lab.github.io
 
-Geekhub blog will be deployed on [this repository](https://github.com/geekhub-lab/geekhub-lab.github.io) automatically on each push.
+http://geekhub.co.kr/
 
 ## Setup
 
