@@ -6,7 +6,7 @@ http://geekhub.co.kr/
 
 ```
 # Clone
-git clone -b vuepress git@github.com:geekhub-lab/geekhub-blog-workspace
+git clone -b vuepress git@github.com:geekhub-lab/geekhub-lab.github.io
 
 # Install packages
 yarn install
