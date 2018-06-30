@@ -14,4 +14,4 @@ yarn install
 
 ## Deployment
 
-When you push, the CI will auto deploy the static blog.
+When you push, the CircleCI will auto deploy the static blog to `master` branch
