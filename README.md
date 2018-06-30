@@ -6,7 +6,7 @@ Geekhub blog will be deployed on [this repository](https://github.com/geekhub-la
 
 ```
 # Clone
-git clone git@github.com:geekhub-lab/geekhub-blog-workspace
+git clone -b vuepress git@github.com:geekhub-lab/geekhub-blog-workspace
 
 # Install packages
 yarn install
@@ -14,4 +14,4 @@ yarn install
 
 ## Deployment
 
-When you push, the CI will auto deploy the blog.
+When you push, the CI will auto deploy the static blog.
