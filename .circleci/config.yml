@@ -6,6 +6,10 @@ jobs:
 
     working_directory: ~/geekuhb-blog-workspace
 
+    branches:
+      only:
+        - vuepress
+
     steps:
       - checkout
 
@@ -30,7 +34,7 @@ jobs:
             cd docs/.vuepress/dist
             git init
             git config --global user.email "geekhub.git@gmail.com"
-            git config --global user.name "deekhub"
+            git config --global user.name "geekhubot"
             git add -A
             git commit -m 'Deploy from CircleCI'
             git push -f git@github.com:geekhub-lab/geekhub-lab.github.io.git master
