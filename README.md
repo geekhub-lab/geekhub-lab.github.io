@@ -8,7 +8,7 @@ http://geekhub.co.kr/
 
 You should have [yarn](https://yarnpkg.com/lang/en/) to setup.
 
-```
+```bash
 # Clone
 git clone -b vuepress git@github.com:geekhub-lab/geekhub-lab.github.io
 
