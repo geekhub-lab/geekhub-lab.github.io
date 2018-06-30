@@ -32,6 +32,7 @@ jobs:
           command: |
             yarn docs:build
             cd docs/.vuepress/dist
+            echo 'geekhub.co.kr' > CNAME
             git init
             git config --global user.email "geekhub.git@gmail.com"
             git config --global user.name "geekhubot"
