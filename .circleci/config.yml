@@ -1,0 +1,36 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:9.8
+
+    working_directory: ~/geekuhb-blog-workspace
+
+    steps:
+      - checkout
+
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+          - deps-{{ checksum "package.json" }}
+          # fallback to using the latest cache if no exact match is found
+          - deps-
+
+      - run: yarn install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: deps-{{ checksum "package.json" }}
+
+      - run:
+          name: Deploy to geekhub-lab.github.io
+          command: |
+            yarn docs:build
+            cd docs/.vuepress/dist
+            git init
+            git config --global user.email "geekhub.git@gmail.com"
+            git config --global user.name "deekhub"
+            git add -A
+            git commit -m 'Deploy from CircleCI'
+            git push -f git@github.com:geekhub-lab/geekhub-lab.github.io.git master

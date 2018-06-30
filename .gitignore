@@ -1,0 +1,8 @@
+# Vuepress build directory
+docs/.vuepress/dist/
+
+# Node modules
+node_modules/
+
+# Trash
+.DS_Store
