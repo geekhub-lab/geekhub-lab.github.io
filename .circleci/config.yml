@@ -8,7 +8,7 @@ jobs:
 
     branches:
       only:
-        - vuepress
+        - deploy
 
     steps:
       - checkout
