@@ -14,7 +14,7 @@ yarn install
 
 ## Deployment
 
-When you `rebase` or `merge` the `vuepress` to `deploy` branch, the CircleCI will auto deploy the static blog to `master` branch.
+When you `rebase` or `merge` the `vuepress` to `deploy` branch, the CircleCI will auto deploy the static blog to `master` branch. Using `rebase` is recommended rather than `merge`.
 
 Steps:
 
