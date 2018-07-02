@@ -40,7 +40,7 @@ class Tree:
         self.right = right
 ```
 
-클래스 `Tree`가 `.__init__()` 메소드에서 아직 (완전히) 정의되지 않았으므로 코드를 실행하면 `NameError`가 발생합니다.
+클래스 `Tree`가 `.__init__()` 메서드에서 아직 (완전히) 정의되지 않았으므로 코드를 실행하면 `NameError`가 발생합니다.
 
 ```python
 Traceback (most recent call last):
@@ -51,7 +51,7 @@ Traceback (most recent call last):
 NameError: name 'Tree' is not defined
 ```
 
-이를 해결하기 위해 문자열 리터럴 `"Tree"`를 써야합니다.
+이를 해결하기 위해서는 문자열 리터럴 `"Tree"`를 사용해야합니다.
 
 ```python
 class Tree:
@@ -60,12 +60,12 @@ class Tree:
         self.right = right
 ```
 
-원래 토론에 대해서는 [PEP 484](https://www.python.org/dev/peps/pep-0484/#forward-references)를 참조하세요.
+전방 참조에 대한 논의는 [PEP 484](https://www.python.org/dev/peps/pep-0484/#forward-references)를 참고하세요.
 
-미래의 [Python 4.0](http://www.curiousefficiency.org/posts/2014/08/python-4000.html)에서는 이와 같이 전방 참조(forward references)가 허용될 것입니다.
-이는 명시적으로 요구될 때까지 어노테이션을 계산하지 않음으로써 처리됩니다.
-[PEP 563](https://www.python.org/dev/peps/pep-0563/)은 이 제안의 세부 사항을 설명합니다.
-Python 3.7에서 전방 참조는 이미 [__future__](https://docs.python.org/3/library/__future__.html)를 `import` 해서 사용 가능합니다.
+추후에 [Python 4.0](http://www.curiousefficiency.org/posts/2014/08/python-4000.html)에서는 전방 참조(forward references)가 허용될 것입니다.
+이는 참조가 명시적으로 요구되기 전까진 어노테이션을 계산하지 않음으로써 처리됩니다.
+이 제안의 자세한 내용은 [PEP 563](https://www.python.org/dev/peps/pep-0563/)에 기술되어 있습니다.
+Python 3.7에서는 이미 [__future__](https://docs.python.org/3/library/__future__.html)를 통해 전방 참조를 사용할 수 있습니다.
 이제 다음과 같이 작성할 수 있습니다:
 
 ```python
@@ -85,8 +85,8 @@ class Tree:
 어노테이션을 직접 처리하는 경우 가능한 전방 참조를 명시적으로 처리해야합니다.
 
 어노테이션이 계산될 때 표시되는 나쁜 예제를 만들어 보겠습니다.
-먼저 오래된 방법으로 처리하므로 어노테이션을 가져올 때 계산됩니다.
-`anno.py` 가 다음 코드를 포함하게 해보세요:
+먼저 기존 방식을 사용하면 어노테이션은 가져오는 시점에 평가됩니다.
+`anno.py`에 다음 코드를 작성해보세요:
 
 ```python
 def greet(name: print("Now!")):
@@ -94,7 +94,7 @@ def greet(name: print("Now!")):
 ```
 
 `name`의 어노테이션은 `print()`입니다.
-이것은 어노테이션이 계산되는 시점을 정확하게 볼 수 있습니다.
+이는 어노테이션이 평가되는 시점을 정확하게 볼 수 있는 유일한 방법입니다.
 새 모듈을 가져와보세요:
 
 ```python
@@ -108,8 +108,8 @@ Now!
 Hello Alice
 ```
 
-보시다시피, 어노테이션을 가져올 때 계산되었습니다.
-`print()`의 반환값이기 때문에 `name`은 `None`으로 어노테이트됩니다.
+보시다시피, 어노테이션은 임포트 시점에 평가되었습니다.
+그 다음 `name`은 `print()`의 반환값인 `None`으로 어노테이트됩니다.
 어노테이션의 지연된 계산을 사용하려면 `__future__`를 `import` 하세요.
 
 ```python
@@ -119,7 +119,7 @@ def greet(name: print("Now!")):
     print(f"Hello {name}")
 ```
 
-이 업데이트된 코드를 가져오면 어노테이션을 계산하지 않습니다.
+이 수정된 코드를 임포트하면 어노테이션을 평가되지 않습니다.
 
 ```python
 >>> import anno
@@ -131,8 +131,7 @@ def greet(name: print("Now!")):
 Hello Marty
 ```
 
-이제 유의하세요.
-결코 `print` 되지 않으며 어노테이션은 `__annotations__` 딕셔너리에 문자열 리터럴로 보관됩니다.
+`Now!`는 출력되지 않았고, 어노테이션은 `__annotations__` 딕셔너리에 문자열 리터럴로 보관됩니다 남아 있음에 주목하세요.
 어노테이션을 계산하려면 `typing.get_type_hints()` 또는 `eval()`을 사용하세요.
 
 ```python
@@ -148,7 +147,7 @@ Now!
 {'name': "print('Now!')"}
 ```
 
-`__annotations__` 딕셔너리는 절대로 업데이트되지 않으므로 어노테이션을 사용할 때마다 계산해야합니다.
+`__annotations__` 딕셔너리는 절대로 수정되지 않으므로 어노테이션을 사용할 때마다 계산해야합니다.
 
 
 ## 시간 정밀도
