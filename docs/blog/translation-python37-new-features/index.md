@@ -17,15 +17,15 @@
 ## 향상된 타이핑
 
 타입 힌팅과 어노테이션은 Python 3 릴리즈 전체에서 꾸준히 개발되어 왔습니다.
-파이썬의 <a href="https://www.youtube.com/watch?v=2xWhaALHTvU" target="_blank">타이핑 시스템</a>은 이제 꽤 안정적입니다.
+파이썬의 [타이핑 시스템](https://www.youtube.com/watch?v=2xWhaALHTvU)은 이제 꽤 안정적입니다.
 그럼에도 불구하고 Python 3.7은 성능 향상, 핵심 지원 및 전방 참조(forward references)와 같은 몇 가지 개선 사항을 제공합니다.
 
-파이썬은 런타임 시에 (명시적으로 <a href="https://pypi.org/project/enforce/" target="_blank">enforce</a>와 같은 패키지를 사용하지 않는 한) 타입 검사를 하지 않습니다.
+파이썬은 런타임 시에 (명시적으로 [enforce](https://pypi.org/project/enforce/)와 같은 패키지를 사용하지 않는 한) 타입 검사를 하지 않습니다.
 따라서 코드에 타입 힌트를 추가해도 성능에 영향을 미치지 않습니다.
 
 불행히도, 대부분의 타입 힌트가 `typing` 모듈을 필요로 하기 때문에 완전하지 않습니다.
-`typing` 모듈은 표준 라이브러리에서 <a href="https://www.python.org/dev/peps/pep-0560/#performance" target="_blank">가장 느린 모듈</a> 중 하나입니다.
-<a href="https://www.python.org/dev/peps/pep-0560/" target="_blank">PEP 560</a>은 `typing` 모듈의 속도를 대폭 향상시키는 Python 3.7에서 타이핑에 대한 핵심 지원을 추가합니다.
+`typing` 모듈은 표준 라이브러리에서 [가장 느린 모듈](https://www.python.org/dev/peps/pep-0560/#performance) 중 하나입니다.
+[PEP 560](https://www.python.org/dev/peps/pep-0560/)은 `typing` 모듈의 속도를 대폭 향상시키는 Python 3.7에서 타이핑에 대한 핵심 지원을 추가합니다.
 이것에 대한 세부 사항은 일반적으로 알 필요가 없습니다. 느긋하게 누워서 향상된 성능을 즐기세요.(TODO: 더 자연스러운 표현은 없을까)
 
 파이썬의 타입 시스템은 합리적으로 표현력이 있지만, 약간의 고통을 주는 한 가지 문제는 전방 참조(forward references)입니다.
@@ -60,12 +60,12 @@ class Tree:
         self.right = right
 ```
 
-원래 토론에 대해서는 <a href="https://www.python.org/dev/peps/pep-0484/#forward-references" target="_blank">PEP 484</a>를 참조하세요.
+원래 토론에 대해서는 [PEP 484](https://www.python.org/dev/peps/pep-0484/#forward-references)를 참조하세요.
 
-미래의 <a href="http://www.curiousefficiency.org/posts/2014/08/python-4000.html" target="_blank">Python 4.0</a>에서는 이와 같이 전방 참조(forward references)가 허용될 것입니다.
+미래의 [Python 4.0](http://www.curiousefficiency.org/posts/2014/08/python-4000.html)에서는 이와 같이 전방 참조(forward references)가 허용될 것입니다.
 이는 명시적으로 요구될 때까지 어노테이션을 계산하지 않음으로써 처리됩니다.
-<a href="https://www.python.org/dev/peps/pep-0563/" target="_blank">PEP 563</a>은 이 제안의 세부 사항을 설명합니다.
-Python 3.7에서 전방 참조는 이미 <a href="https://docs.python.org/3/library/__future__.html" target="_blank">__future__</a>를 `import` 해서 사용 가능합니다.
+[PEP 563](https://www.python.org/dev/peps/pep-0563/)은 이 제안의 세부 사항을 설명합니다.
+Python 3.7에서 전방 참조는 이미 [__future__](https://docs.python.org/3/library/__future__.html)를 `import` 해서 사용 가능합니다.
 이제 다음과 같이 작성할 수 있습니다:
 
 ```python
@@ -78,7 +78,7 @@ class Tree:
 ```
 
 다소 불명확한 `"Tree"` 구문을 피하는 것 외에도 타입 힌트 계산이 지연되지 않으므로 지연된 어노테이션 계산도 코드 속도를 높입니다.(TODO: 말이 너무 꼬인 느낌)
-전방 참조(forward references)는 이미 <a href="http://mypy-lang.org/" target="_blank">mypy</a>에서 지원합니다.
+전방 참조(forward references)는 이미 [mypy](http://mypy-lang.org/)에서 지원합니다.
 
 지금까지 어노테이션의 가장 일반적인 사용은 타입 힌팅입니다.
 그럼에도 불구하고 런타임 시에 어노테이션에 대한 모든 액세스 권한을 가지며 적절하게 사용할 수 있습니다.
@@ -201,7 +201,7 @@ for ctx in reversed(contexts):
     ctx.run(greet)
 ```
 
-이 스크립트를 실행하면 Steve, Dina 및 Harry가 역순으로 출력됩니다.
+이 스크립트를 실행하면 Steve, Dina, Harry 가 역순으로 출력됩니다.
 
 ### "Importlib.resources"로 데이터 파일 불러오기
 
