@@ -29,3 +29,5 @@ Steps:
 2. When done, `rebase` or `merge` to `deploy`
 3. Push to remote `deploy` branch
 4. Auto build and deploy will be processed
+
+> `deploy` branch is protected. Only @mingrammer can push to this branch now. If you need to push to `deploy` branch, please contact me.
