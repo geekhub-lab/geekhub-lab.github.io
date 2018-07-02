@@ -13,8 +13,8 @@
 *가나다순*
 
 * 강명서 (leop0ld): [Github](https://github.com/leop0ld)
-* 김성훈
 * 권민재 (mingrammer): [Github](https://github.com/mingrammer)
+* 김성훈
 * 김지윤 (BlizzardBlue): [Github](https://github.com/BlizzardBlue)
 * 김정화
 * 김지형 (roamgom): [Github](https://github.com/roamgom)
