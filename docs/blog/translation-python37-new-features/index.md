@@ -63,7 +63,7 @@ class Tree:
 전방 참조에 대한 논의는 [PEP 484](https://www.python.org/dev/peps/pep-0484/#forward-references)를 참고하세요.
 
 추후에 [Python 4.0](http://www.curiousefficiency.org/posts/2014/08/python-4000.html)에서는 전방 참조(forward references)가 허용될 것입니다.
-이는 참조가 명시적으로 요구되기 전까진 어노테이션을 계산하지 않음으로써 처리됩니다.
+이는 참조가 명시적으로 요구되기 전까진 어노테이션을 평가하지 않음으로써 처리됩니다.
 이 제안의 자세한 내용은 [PEP 563](https://www.python.org/dev/peps/pep-0563/)에 기술되어 있습니다.
 Python 3.7에서는 이미 [__future__](https://docs.python.org/3/library/__future__.html)를 통해 전방 참조를 사용할 수 있습니다.
 이제 다음과 같이 작성할 수 있습니다:
@@ -77,14 +77,14 @@ class Tree:
         self.right = right
 ```
 
-지연된 어노테이션을 사용함으로써 다소 불명확한 `"Tree"` 구문을 피하고 타입 힌트 계산도 지연시키기 때문에 코드 속도 또한 빨라집니다.
+지연된 어노테이션을 사용함으로써 다소 불명확한 `"Tree"` 구문을 피하고 타입 힌트도 실행하지 않기 때문에 코드 속도 또한 빨라집니다.
 전방 참조(forward references)는 이미 [mypy](http://mypy-lang.org/)에서 지원되고 있습니다.
 
 지금까지 어노테이션의 가장 일반적인 사용처는 타입 힌팅입니다.
 그럼에도 불구하고 런타임 시에 어노테이션에 대한 모든 액세스 권한을 가지며 적절하게 사용할 수 있습니다.
 어노테이션을 직접 처리하는 경우 가능한 전방 참조를 명시적으로 처리해야합니다.
 
-어노테이션이 계산될 때 표시되는 나쁜 예제를 만들어 보겠습니다.
+어노테이션이 평가될 때 표시되는 나쁜 예제를 만들어 보겠습니다.
 먼저 기존 방식을 사용하면 어노테이션은 가져오는 시점에 평가됩니다.
 `anno.py`에 다음 코드를 작성해보세요:
 
@@ -110,7 +110,7 @@ Hello Alice
 
 보시다시피, 어노테이션은 임포트 시점에 평가되었습니다.
 그 다음 `name`은 `print()`의 반환값인 `None`으로 어노테이트됩니다.
-어노테이션의 지연된 계산을 사용하려면 `__future__`를 `import` 하세요.
+지연된 어노테이션 평가를 사용하려면 `__future__`를 `import` 하세요.
 
 ```python
 from __future__ import annotations
@@ -132,7 +132,7 @@ Hello Marty
 ```
 
 `Now!`는 출력되지 않았고, 어노테이션은 `__annotations__` 딕셔너리에 문자열 리터럴로 보관됩니다 남아 있음에 주목하세요.
-어노테이션을 계산하려면 `typing.get_type_hints()` 또는 `eval()`을 사용하세요.
+어노테이션을 평가하려면 `typing.get_type_hints()` 또는 `eval()`을 사용하세요.
 
 ```python
 >>> import typing
@@ -147,7 +147,7 @@ Now!
 {'name': "print('Now!')"}
 ```
 
-`__annotations__` 딕셔너리는 절대로 수정되지 않으므로 어노테이션을 사용할 때마다 계산해야합니다.
+`__annotations__` 딕셔너리는 절대로 수정되지 않으므로 어노테이션을 사용할 때마다 평가해야합니다.
 
 
 ## 시간 정밀도
