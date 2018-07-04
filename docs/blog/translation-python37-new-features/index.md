@@ -10,23 +10,23 @@
 
 Python 3.7이 [공식적으로 릴리스](https://www.python.org/downloads/release/python-370/) 되었습니다. 이 버전은 [2016년 9월](https://www.python.org/dev/peps/pep-0537/)부터 개발되어 왔으며 핵심 개발자들의 노력으로 드디어 사용할 수 있게 되었습니다.
 
-새로운 버전에선 어떤것들이 바뀌었을까요? [Python 3.7 문서](https://docs.python.org/3.7/whatsnew/3.7.html)에서 새로운 기능들을 살펴볼 수도 있지만, 이 포스트에서는 주목할만한 변경점들에 대해서 좀 더 자세히 다뤄보고자 합니다.
+새로운 버전에선 어떤 것들이 바뀌었을까요? [Python 3.7 문서](https://docs.python.org/3.7/whatsnew/3.7.html)에서 새로운 기능들을 살펴볼 수도 있지만, 이 포스트에서는 주목할만한 변경점들에 대해서 좀 더 자세히 다뤄보고자 합니다.
 
 이 포스트에서 다룰 내용은 다음과 같습니다.
 
 - 새로운 breakpoint() 내장 함수를 통한 좀 더 수월한 디버깅
-- 데이터 클래스 (dataclass)를 사용한 간편한 클래스 생성
+- 데이터 클래스(dataclass)를 사용한 간편한 클래스 생성
 - 모듈 속성 접근 커스터마이징
 - 향상된 타입 힌팅 지원
 - 고정밀 시간 함수
 
-더 중요한건 Python3.7은 빠르다는 것입니다.
+더 중요한 건 Python3.7은 빠르다는 것입니다.
 
 Python 3.7의 속도에 대해서도 마지막 섹션에서 살펴볼 것입니다. 새로운 버전으로의 업그레이드에 대한 여러 조언을 얻을 수 있을 것입니다.
 
 ## breakpoint() 내장 함수 지원
 
-개발자들은 완벽한 코드를 작성하려고 노력하지만, 진실은 결코 완벽한 코드를 작성할수는 없다는 것입니다. 디버깅은 프로그래밍의 중요한 부분입니다. Python 3.7에는 breakpoint()라는 새로운 내장 함수가 들어왔습니다. 이 함수는 Python에 새로운 기능을 제공하지는 않지만 디버거를 좀 더 유연하고 직관적으로 사용할 수 있게 해줍니다.
+개발자들은 완벽한 코드를 작성하려고 노력하지만, 진실은 결코 완벽한 코드를 작성할 수는 없다는 것입니다. 디버깅은 프로그래밍의 중요한 부분입니다. Python 3.7에는 breakpoint()라는 새로운 내장 함수가 들어왔습니다. 이 함수는 Python에 새로운 기능을 제공하지는 않지만 디버거를 좀 더 유연하고 직관적으로 사용할 수 있게 해줍니다.
 
 여러분이 `bugs.py` 파일에 다음과 같은 버그를 유발하는 코드를 작성했다고 가정해봅시다.
 
@@ -38,7 +38,7 @@ a, b = 0, 1
 print(divide(a, b))
 ```
 
-코드를 실행하면 `divide()` 함수에서 `ZeroDivisionError` 익셉션이 발생할 것입니다. 여러분은 디버깅을 위해  `divide()` 최상단에 [디버거](https://realpython.com/python-debugging-pdb/)를 위치시켜 코드를 인터럽트하고 싶을겁니다. 코드에 소위 "중단점 (breakpoint)"이라고 하는걸 설정하면 코드를 인터럽트 할 수 있습니다.
+코드를 실행하면 `divide()` 함수에서 `ZeroDivisionError` 익셉션이 발생할 것입니다. 여러분은 디버깅을 위해  `divide()` 최상단에 [디버거](https://realpython.com/python-debugging-pdb/)를 위치시켜 코드를 인터럽트하고 싶을겁니다. 코드에 소위 "중단점(breakpoint)"이라고 하는걸 설정하면 코드를 인터럽트 할 수 있습니다.
 
 ```python
 def divide(e, f):
@@ -67,13 +67,13 @@ def divide(e, f):
 `breakpoint()`가 작성된 `bugs.py` 스크립트를 실행해봅시다.
 
 ```
-$ python3.7 bugs.py 
+$ python3.7 bugs.py
 > /home/gahjelle/bugs.py(3)divide()
 -> return f / e
 (Pdb)
 ```
 
-스크립트는 `breakpoint()`를 만나면 실행이 중단되고 PDB 디버깅 세션에 진입할 것입니다. `c`를 입력하고 엔터를 누르면 스크립트를 계속 진행할 수 있습니다. PDB와 디버깅에 대해 좀 더 자세히 알고싶다면 `Nathan Jennings의 PDB 가이드`를 참고하세요.
+스크립트는 `breakpoint()`를 만나면 실행이 중단되고 PDB 디버깅 세션에 진입할 것입니다. `c`를 입력하고 엔터를 누르면 스크립트를 계속 진행할 수 있습니다. PDB와 디버깅에 대해 좀 더 자세히 알고싶다면 [Nathan Jennings의 PDB 가이드](https://realpython.com/python-debugging-pdb/)를 참고하세요.
 
 이제 여러분이 버그를 고쳤다고 생각한다고 해봅시다. 그럼 이제 여러분은 디버거에서의 중단 없이 코드를 실행하고 싶을겁니다. 그냥 `breakpoint()` 라인을 주석처리 해버려도 되지만 `PYTHONBREAKPOINT` 환경 변수를 사용할 수도 있습니다. 이 변수는 `breakpoint()`의 동작을 제어하는데 `PYTHONBREAKPOINT=0`으로 설정하면 모든 `breakpoint()` 호출이 무시됩니다.
 
@@ -84,7 +84,7 @@ ZeroDivisionError: division by zero
 
 버그가 안고쳐진 것 같습니다 ..
 
-또 다른 옵션은 `PYTHONBREAKPOINT`를 사용해 PDB 외의 디버거를 지정하는 것입니다. 예를 들어, [PuDB ()](https://pypi.org/project/pudb/)를 사용하려면 다음과 같이 설정하면 됩니다.
+또 다른 옵션은 `PYTHONBREAKPOINT`를 사용해 PDB 외의 디버거를 지정하는 것입니다. 예를 들어, [PuDB (콘솔 시각화 디버거)](https://pypi.org/project/pudb/)를 사용하려면 다음과 같이 설정하면 됩니다.
 
 ```
 $ PYTHONBREAKPOINT=pudb.set_trace python3.7 bugs.py
@@ -95,7 +95,7 @@ $ PYTHONBREAKPOINT=pudb.set_trace python3.7 bugs.py
 새로운 `breakpoint()` 함수는 디버거에서만 동작하지는 않습니다. 한 가지 편리한 옵션은 코드 내에서 대화형 셸을 시작하는 것입니다. 예를 들어, IPython 세션을 시작하려면 다음과 같이 설정하면 됩니다.
 
 ```
-$ PYTHONBREAKPOINT=IPython.embed python3.7 bugs.py 
+$ PYTHONBREAKPOINT=IPython.embed python3.7 bugs.py
 IPython 6.3.1 -- An enhanced Interactive Python. Type '?' for help.
 
 In [1]: print(e / f)
@@ -145,7 +145,7 @@ ZeroDivisionError: division by zero
 
 ## 데이터 클래스 (dataclass)
 
-새로운 [데이터 클래스 (dataclasses)](https://docs.python.org/3.7/library/dataclasses.html) 모듈은 `.__init__()` , `.__repr()__.` 및 `.__eq__()`와 같은 특수 메서드를 자동으로 추가함으로써 클래스를 보다 더 편리하게 작성할 수 있도록 해줍니다. `@dataclass` 데코레이터를 사용해 다음과 같이 작성할 수 있습니다.
+새로운 [데이터 클래스 (dataclasses)](https://docs.python.org/3.7/library/dataclasses.html) 모듈은 `.__init__()` , `.__repr__()` 및 `.__eq__()`와 같은 특수 메서드를 자동으로 추가함으로써 클래스를 보다 더 편리하게 작성할 수 있도록 해줍니다. `@dataclass` 데코레이터를 사용해 다음과 같이 작성할 수 있습니다.
 
 ```python
 from dataclasses import dataclass, field
@@ -162,7 +162,7 @@ class Country:
         return (self.coastline * 1000) / self.population
 ```
 
-이 9줄의 코드는 많은 보일러 플레이트 코드와 모범 사례를 보여주고 있습니다. 이 `Country` 클래스를 일반 클래스로 구현하려면 어떤것들이 필요할지 생각해봅시다. `__init__()` 메서드, `repr`, 6개의 비교 메서드 및 `.beach_per_person()` 메서드가 필요합니다. 데이터 클래스로 구현한 `Country` 클래스를 일반 클래스로 구현하면 다음과 같습니다.
+이 9줄의 코드는 많은 보일러 플레이트 코드와 모범 사례를 보여주고 있습니다. 이 `Country` 클래스를 일반 클래스로 구현하려면 어떤 것들이 필요할지 생각해봅시다. `__init__()` 메서드, `repr`, 6개의 비교 메서드 및 `.beach_per_person()` 메서드가 필요합니다. 데이터 클래스로 구현한 `Country` 클래스를 일반 클래스로 구현하면 다음과 같습니다.
 
 ```python
 class Country:
@@ -269,7 +269,7 @@ False
  Country(name='United States', population=326625791, coastline=19924)]
 ```
 
-정렬은 필드값을 기준으로 이루어지며 `.name`, `.population` 등의 순서로 비교가 수행됩니다. 그러나, `field()`를 사용하면 비교할 필드를 [직접 정의](https://realpython.com/python-data-classes/#advanced-default-values) 할 수 있습니다. 이 예제에서 `.area` 필드는 `repr`과 비교에서 제외되었습니다.
+정렬은 필드값을 기준으로 이루어지며 `.name`, `.population` 등의 순서로 비교가 수행됩니다. 그러나, `field()`를 사용하면 비교할 필드를 [직접 정의](https://realpython.com/python-data-classes/#advanced-default-values)할 수 있습니다. 이 예제에서 `.area` 필드는 `repr`과 비교에서 제외되었습니다.
 
 데이터 클래스는 [namedtuple](https://dbader.org/blog/writing-clean-python-with-namedtuples)과 일부 동일한 작업을 수행합니다. 하지만 데이터 클래스는 [attrs 프로젝트](http://www.attrs.org/)에서 가장 많은 영향을 받았습니다. 더 많은 예제와 자세한 내용은 [데이터 클래스에 대한 완벽 가이드](https://realpython.com/python-data-classes/)와 공식 문서인 [PEP 557](https://www.python.org/dev/peps/pep-0557/)를 참고하세요.
 
