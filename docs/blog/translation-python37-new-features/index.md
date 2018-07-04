@@ -62,7 +62,7 @@ def divide(e, f):
     return f / e
 ```
 
-백그라운드에서, `breakpoint()`는 먼저 `pdb`를 임포트한 뒤 `pub.set_trace()`를 호출합니다. 가시적인 이점은 `breakpoint()`가 `import pdb; pdb.set_trace()`보다  더 기억하기 쉬우며 27자 대신 12자만 작성하면 된다는 것입니다. 하지만, `breakpoint()`을 사용함으로써 얻을 수 있는 실질적인 이점은 커스터마이징 기능입니다.
+백그라운드에서, `breakpoint()`는 먼저 `pdb`를 임포트한 뒤 `pub.set_trace()`를 호출합니다. 가시적인 이점은 `breakpoint()`가 `import pdb; pdb.set_trace()`보다 더 기억하기 쉬우며 27자 대신 12자만 작성하면 된다는 것입니다. 하지만, `breakpoint()`을 사용함으로써 얻을 수 있는 실질적인 이점은 커스터마이징 기능입니다.
 
 `breakpoint()`가 작성된 `bugs.py` 스크립트를 실행해봅시다.
 
