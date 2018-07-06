@@ -2,6 +2,8 @@
 
 > [Cool New Features in Python 3.7](https://realpython.com/python37-new-features/)을 번역한 글입니다.
 
+![Cool New Features in Python 3.7](/cool-new-features-in-python-37.png)
+
 ---
 
 [[toc]]
@@ -276,7 +278,192 @@ False
 
 ## 모듈 속성 커스터마이징
 
+속성은 Python의 모든 곳에 존재합니다. 클래스 속성이 가장 잘 알려져 있지만 Python에서 속성은 본질적으로 함수나 모듈을 포함한 그 어떤 객체에도 포함될 수 있습니다. Python의 몇 가지 기본 기능들은 속성으로 구현됩니다. 대부분의 인트로스펙션 기능 (Introspection이란 런타임시에 타입 또는 속성을 결정할 수 있는 능력을 말함), 문서 문자열(docstring) 및 네임스페이스등이 그러합니다. 모듈 내의 함수는 모듈의 속성으로 사용할 수 있습니다.
 
+속성은 보통 `thing.attribute`와 같이 닷(.) 표기법을 사용해 가져옵니다. 그러나 런타임중에 명명되는 속성의 경우는 `getattr()`을 통해 가져올 수 있습니다.
+
+```python
+import random
+
+random_attr = random.choice(("gammavariate", "lognormvariate", "normalvariate"))
+random_func = getattr(random, random_attr)
+
+print(f"A {random_attr} random value: {random_func(1, 1)}")
+```
+
+위 코드를 실행하면 다음과 같은 결과가 나옵니다.
+
+```
+A gammavariate random value: 2.8017715125270618
+```
+
+클래스에서 `thing.attr`을 호출하면 가장 먼저 `thing`에 `attr`이 정의되어 있는지 확인합니다. 정의되어 있지 않으면 특수 메서드인 `thing.__getattr__("attr")`이 호출됩니다. (이는 상당히 간략화한 것으로, 더 자세한 내용은 [이 글](http://blog.lerner.co.il/python-attributes/)을 참고하세요.) `__getattr__()` 메서드는 객체의 속성에 대한 접근 제어를 직접 정의할때 사용할 수 있습니다. Python 3.7 이전까지는 모듈 속성을 커스터마이징하는게 쉽지 않았지만, [PEP 562](https://www.python.org/dev/peps/pep-0562/)를 통해 모듈에서 사용할 수 있는 `__dir__()` 함수와 함께 `__getattr__()`가 도입되었습니다. `__dir__()` 특수 함수를 사용하면 [모듈의 dir()](https://realpython.com/python-modules-packages/#the-dir-function) 호출 결과를 커스터마이징 할 수 있습니다.
+
+PEP 자체는 이 함수들을 사용할 수 있는 몇 가지 예시들을 제공합니다. 여기에는 함수에 대한 중단(deprecation) 경고와 무거운 서브모듈의 지연 로딩(Lazy loading)이 포함됩니다. 아래 예제에서는 모듈에 함수를 동적으로 추가할 수 있는 플러그인 시스템을 만들어 볼 것 입니다. 이 예제는 Python의 패키지 시스템을 활용합니다. 패키지에 대한 자세한 내용은 [이 글](https://realpython.com/python-modules-packages/)을 참고하세요.
+
+`plugins`라는 디렉터리를 만든 뒤, `plugins/__init__.py` 파일에 다음 코드를 추가해봅시다.
+
+```python
+from importlib import import_module
+from importlib import resources
+
+PLUGINS = dict()
+
+def register_plugin(func):
+    """플러그인 등록을 위한 데코레이터"""
+    name = func.__name__
+    PLUGINS[name] = func
+    return func
+
+def __getattr__(name):
+    """명명된 플러그인을 반환합니다"""
+    try:
+        return PLUGINS[name]
+    except KeyError:
+        _import_plugins()
+        if name in PLUGINS:
+            return PLUGINS[name]
+        else:
+            raise AttributeError(
+                f"module {__name__!r} has no attribute {name!r}"
+            ) from None
+
+def __dir__():
+    """사용 가능한 플러그인들을 출력합니다"""
+    _import_plugins()
+    return list(PLUGINS.keys())
+
+def _import_plugins():
+    """플러그인들을 등록하기 위해 모든 리소스를 가져옵니다"""
+    for name in resources.contents(__name__):
+        if name.endswith(".py"):
+            import_module(f"{__name__}.{name[:-3]}")
+```
+
+이 코드가 무슨일을 하는지 살펴보기 전에 `plugins` 디렉터리에 두 개의 파일을 더 추가해봅시다. 먼저 `plugins/plugin_1.py`를 다음과 같이 작성합니다.
+
+```python
+from . import register_plugin
+
+@register_plugin
+def hello_1():
+    print("Hello from Plugin 1")
+```
+
+그 다음 `plugins/plugin_2.py`에 비슷한 코드를 작성합니다.
+
+```python
+from . import register_plugin
+
+@register_plugin
+def hello_2():
+    print("Hello from Plugin 2")
+
+@register_plugin
+def goodbye():
+    print("Plugin 2 says goodbye")
+```
+
+이 플러그인들은 다음과 같이 사용할 수 있습니다.
+
+```python
+>>> import plugins
+>>> plugins.hello_1()
+Hello from Plugin 1
+
+>>> dir(plugins)
+['goodbye', 'hello_1', 'hello_2']
+
+>>> plugins.goodbye()
+Plugin 2 says goodbye
+```
+
+뭐 딱히 혁신적인 기능인 것 같지는 않지만 무슨 일이 일어난건지 한 번 살펴봅시다. 기본적으로 `plugins.hello_1()` 호출이 가능하려면 `hello_1()`이 `plugins` 모듈에 정의되어 있거나 `plugins` 패키지의 `__init__.py`에 명시적으로 임포트 되어있어야 합니다. 이 예제에선 이 둘 모두 사용하지 않았습니다.
+
+대신 `hello_1()`는  `plugins` 패키지 내의 임의의 파일에 정의되어 있으며 `@register_plugin` [데코레이터](https://realpython.com/primer-on-python-decorators/)를 사용해 자기 자신을 등록함으로써  `plugins` 패키지의 일부가 됩니다.
+
+차이는 미묘한데, 패키지가 사용할 수 있는 함수를 직접 명시하는 대신, 각각의 함수가 자기 자신을 패키지의 일부로 등록하고 있습니다. 이렇게하면 사용할 수 있는 함수의 목록을 중앙 집중식으로 한 곳에서 관리하지 않고 나머지 코드와는 독립적으로 함수를 추가할 수 있는 간단한 구조를 만들 수 있습니다.
+
+이제 `__getattr__()`이 `plugins/__init__.py` 코드 내에서 수행하는 작업에 대해 간단히 살펴보겠습니다. `plugins.hello_1()`을 호출하면 Python은 가장 먼저 `plugins/__init__.py`에서 `hello_1()` 함수를 검색합니다. 함수가 존재하지 않으면, Python은 대신 `__getattr__("hello_1")`을 호출합니다. `__getattr__()` 함수의 소스코드를 기억해보세요.
+
+```python
+def __getattr__(name):
+    """Return a named plugin"""
+    try:
+        return PLUGINS[name]        # 1) 플러그인 반환
+    except KeyError:
+        _import_plugins()           # 2) 모든 플러그인을 가져옴
+        if name in PLUGINS:
+            return PLUGINS[name]    # 3) 플러그인을 다시 반환
+        else:
+            raise AttributeError(   # 4) 익셉션 발생
+                f"module {__name__!r} has no attribute {name!r}"
+            ) from None
+```
+
+`__getattr__()`은 다음 단계들로 이루어져 있습니다. 각 단계별 번호는 코드의 주석 번호와 대응됩니다.
+
+1. 먼저 `PLUGINS` 딕셔너리에 플러그인이 존재하는지 확인합니다. `name`으로 명명된 플러그인이 이미 임포트 되어 있다면 플러그인을 꺼내 반환합니다.
+2. 플러그인이 `PLUGINS` 딕셔너리에 존재하지 않으면 모든 플러그인을 불러옵니다.
+3. 가져온 다음 플러그인을 사용할 수 있게 되면 플러그인을 반환합니다
+4. 모든 플러그인을 가져온 뒤에도 `PLUGINS` 딕셔너리에 플러그인이 존재하지 않으면 `name`이 현재 모듈의 속성 (플러그인)이 아님을 알리는 `AttributeError` 익셉션을 발생시킵니다.
+
+그렇다면 `PLUGINS` 딕셔너리는 어떻게 채워질까요? `_import_plugins_()` 함수는 `plugins` 패키지의 모든 Python 파일을 임포트합니다. 그러나 `PLUGINS`에 플러그인을 직접 등록하는 코드는 보이지 않습니다.
+
+```python
+def _import_plugins():
+    """Import all resources to register plug-ins"""
+    for name in resources.contents(__name__):
+        if name.endswith(".py"):
+            import_module(f"{__name__}.{name[:-3]}")
+```
+
+각 플러그인 함수가 `@register_plugin` 데코레이터로 감싸져 있음을 기억하세요. 이 데코레이터는 플러그인이 임포트되는 시점에 호출되며 실제로 `PLUGINS` 딕셔너리에 플러그인을 채우는데 사용됩니다. 플러그인 파일중 하나를 직접 임포트 해보면 채워지는 과정을 볼 수 있습니다.
+
+```python
+>>> import plugins
+>>> plugins.PLUGINS
+{}
+
+>>> import plugins.plugin_1
+>>> plugins.PLUGINS
+{'hello_1': <function hello_1 at 0x7f29d4341598>}
+```
+
+예제를 계속 진행하면, 모듈에서 `dir()`를 호출해도 나머지 플러그인들을 가져옴을 볼 수 있습니다.
+
+```python
+>>> dir(plugins)
+['goodbye', 'hello_1', 'hello_2']
+
+>>> plugins.PLUGINS
+{'hello_1': <function hello_1 at 0x7f29d4341598>,
+ 'hello_2': <function hello_2 at 0x7f29d4341620>,
+ 'goodbye': <function goodbye at 0x7f29d43416a8>}
+
+```
+
+`dir()`는 일반적으로 객체에서 사용 가능한 모든 속성을 나열합니다. 모듈에서 `dir()`를 사용하면 다음과 같은 결과를 얻습니다.
+
+```python
+>>> import plugins
+>>> dir(plugins)
+['PLUGINS', '__builtins__', '__cached__', '__doc__',
+ '__file__', '__getattr__', '__loader__', '__name__',
+ '__package__', '__path__', '__spec__', '_import_plugins',
+ 'import_module', 'register_plugin', 'resources']
+```
+
+위 정보도 물론 유용하겠지만, 우리는 사용할 수 있는 플러그인들을 보여주는데 더 관심있습니다. Python 3.7에서는 `__dir__()` 특수 함수를 사용해 모듈의 `dir()` 반환값을 커스터마이징 할 수 있습니다. `plugins/__init__.py`에서 이 함수는 모든 플러그인을 임포트한 뒤 플러그인들의 이름을 나열합니다.
+
+```python
+def __dir__():
+    """List available plug-ins"""
+    _import_plugins()
+    return list(PLUGINS.keys())
+```
+
+예제를 마무리하기 전에, Python 3.7의 또 다른 새로운 기능을 사용했음을 주목하세요. 위 예제에서 우리는 `plugins` 디렉터리에서 모든 모듈을 임포트하기 위해 [importlib.resources](https://docs.python.org/3.7/library/importlib.html#module-importlib.resources)를 사용했습니다. 이 모듈을 사용하면 `__file__` (안되는 경우도 있음) 이나 `pkg_resources` (느림)을 사용하지 않고도 모듈 및 패키지 내의 파일과 리소스에 접근할 수 있습니다. `importlib.resources`의 다른 기능들은 [나중에](#기타-멋진-기능들) 살펴보겠습니다.
 
 ## 향상된 타이핑
 
