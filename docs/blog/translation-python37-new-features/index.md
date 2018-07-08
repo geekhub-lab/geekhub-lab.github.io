@@ -297,7 +297,9 @@ print(f"A {random_attr} random value: {random_func(1, 1)}")
 A gammavariate random value: 2.8017715125270618
 ```
 
-클래스에서 `thing.attr`을 호출하면 가장 먼저 `thing`에 `attr`이 정의되어 있는지 확인합니다. 정의되어 있지 않으면 특수 메서드인 `thing.__getattr__("attr")`이 호출됩니다. (이는 상당히 간략화한 것으로, 더 자세한 내용은 [이 글](http://blog.lerner.co.il/python-attributes/)을 참고하세요.) `__getattr__()` 메서드는 객체의 속성에 대한 접근 제어를 직접 정의할때 사용할 수 있습니다. Python 3.7 이전까지는 모듈 속성을 커스터마이징하는게 쉽지 않았지만, [PEP 562](https://www.python.org/dev/peps/pep-0562/)를 통해 모듈에서 사용할 수 있는 `__dir__()` 함수와 함께 `__getattr__()`가 도입되었습니다. `__dir__()` 특수 함수를 사용하면 [모듈의 dir()](https://realpython.com/python-modules-packages/#the-dir-function) 호출 결과를 커스터마이징 할 수 있습니다.
+클래스에서 `thing.attr`을 호출하면 가장 먼저 `thing`에 `attr`이 정의되어 있는지 확인합니다. 정의되어 있지 않으면 특수 메서드인 `thing.__getattr__("attr")`이 호출됩니다. (이는 상당히 간략화한 것으로, 더 자세한 내용은 [이 글](http://blog.lerner.co.il/python-attributes/)을 참고하세요.) `__getattr__()` 메서드는 객체의 속성에 대한 접근 제어를 직접 정의할 때 사용할 수 있습니다.
+
+Python 3.7 이전까지는 모듈 속성을 커스터마이징하는게 쉽지 않았지만, [PEP 562](https://www.python.org/dev/peps/pep-0562/)를 통해 모듈에서 사용할 수 있는 `__dir__()` 함수와 함께 `__getattr__()`가 도입되었습니다. `__dir__()` 특수 함수를 사용하면 [모듈의 dir()](https://realpython.com/python-modules-packages/#the-dir-function) 호출 결과를 커스터마이징 할 수 있습니다.
 
 PEP 자체는 이 함수들을 사용할 수 있는 몇 가지 예시들을 제공합니다. 여기에는 함수에 대한 중단(deprecation) 경고와 무거운 서브모듈의 지연 로딩(Lazy loading)이 포함됩니다. 아래 예제에서는 모듈에 함수를 동적으로 추가할 수 있는 플러그인 시스템을 만들어 볼 것 입니다. 이 예제는 Python의 패키지 시스템을 활용합니다. 패키지에 대한 자세한 내용은 [이 글](https://realpython.com/python-modules-packages/)을 참고하세요.
 
@@ -340,7 +342,7 @@ def _import_plugins():
             import_module(f"{__name__}.{name[:-3]}")
 ```
 
-이 코드가 무슨일을 하는지 살펴보기 전에 `plugins` 디렉터리에 두 개의 파일을 더 추가해봅시다. 먼저 `plugins/plugin_1.py`를 다음과 같이 작성합니다.
+이 코드가 무슨 일을 하는지 살펴보기 전에 `plugins` 디렉터리에 두 개의 파일을 더 추가해봅시다. 먼저 `plugins/plugin_1.py`를 다음과 같이 작성합니다.
 
 ```python
 from . import register_plugin
@@ -378,11 +380,11 @@ Hello from Plugin 1
 Plugin 2 says goodbye
 ```
 
-뭐 딱히 혁신적인 기능인 것 같지는 않지만 무슨 일이 일어난건지 한 번 살펴봅시다. 기본적으로 `plugins.hello_1()` 호출이 가능하려면 `hello_1()`이 `plugins` 모듈에 정의되어 있거나 `plugins` 패키지의 `__init__.py`에 명시적으로 임포트 되어있어야 합니다. 이 예제에선 이 둘 모두 사용하지 않았습니다.
+뭐 딱히 혁신적인 기능인 것 같지는 않지만 무슨 일이 일어난 건지 한 번 살펴봅시다. 기본적으로 `plugins.hello_1()` 호출이 가능하려면 `hello_1()`이 `plugins` 모듈에 정의되어 있거나 `plugins` 패키지의 `__init__.py`에 명시적으로 임포트 되어있어야 합니다. 이 예제에선 이 둘 모두 사용하지 않았습니다.
 
 대신 `hello_1()`는  `plugins` 패키지 내의 임의의 파일에 정의되어 있으며 `@register_plugin` [데코레이터](https://realpython.com/primer-on-python-decorators/)를 사용해 자기 자신을 등록함으로써  `plugins` 패키지의 일부가 됩니다.
 
-차이는 미묘한데, 패키지가 사용할 수 있는 함수를 직접 명시하는 대신, 각각의 함수가 자기 자신을 패키지의 일부로 등록하고 있습니다. 이렇게하면 사용할 수 있는 함수의 목록을 중앙 집중식으로 한 곳에서 관리하지 않고 나머지 코드와는 독립적으로 함수를 추가할 수 있는 간단한 구조를 만들 수 있습니다.
+차이는 미묘한데, 패키지가 사용할 수 있는 함수를 직접 명시하는 대신, 각각의 함수가 자기 자신을 패키지의 일부로 등록하고 있습니다. 이렇게 하면 사용할 수 있는 함수의 목록을 중앙 집중식으로 한 곳에서 관리하지 않고 나머지 코드와는 독립적으로 함수를 추가할 수 있는 간단한 구조를 만들 수 있습니다.
 
 이제 `__getattr__()`이 `plugins/__init__.py` 코드 내에서 수행하는 작업에 대해 간단히 살펴보겠습니다. `plugins.hello_1()`을 호출하면 Python은 가장 먼저 `plugins/__init__.py`에서 `hello_1()` 함수를 검색합니다. 함수가 존재하지 않으면, Python은 대신 `__getattr__("hello_1")`을 호출합니다. `__getattr__()` 함수의 소스코드를 기억해보세요.
 
@@ -418,7 +420,7 @@ def _import_plugins():
             import_module(f"{__name__}.{name[:-3]}")
 ```
 
-각 플러그인 함수가 `@register_plugin` 데코레이터로 감싸져 있음을 기억하세요. 이 데코레이터는 플러그인이 임포트되는 시점에 호출되며 실제로 `PLUGINS` 딕셔너리에 플러그인을 채우는데 사용됩니다. 플러그인 파일중 하나를 직접 임포트 해보면 채워지는 과정을 볼 수 있습니다.
+각 플러그인 함수가 `@register_plugin` 데코레이터로 감싸져 있음을 기억하세요. 이 데코레이터는 플러그인이 임포트되는 시점에 호출되며 실제로 `PLUGINS` 딕셔너리에 플러그인을 채우는 데 사용됩니다. 플러그인 파일 중 하나를 직접 임포트 해보면 채워지는 과정을 볼 수 있습니다.
 
 ```python
 >>> import plugins
@@ -454,7 +456,7 @@ def _import_plugins():
  'import_module', 'register_plugin', 'resources']
 ```
 
-위 정보도 물론 유용하겠지만, 우리는 사용할 수 있는 플러그인들을 보여주는데 더 관심있습니다. Python 3.7에서는 `__dir__()` 특수 함수를 사용해 모듈의 `dir()` 반환값을 커스터마이징 할 수 있습니다. `plugins/__init__.py`에서 이 함수는 모든 플러그인을 임포트한 뒤 플러그인들의 이름을 나열합니다.
+위 정보도 물론 유용하겠지만, 우리는 사용할 수 있는 플러그인들을 보여주는 데에 더 관심있습니다. Python 3.7에서는 `__dir__()` 특수 함수를 사용해 모듈의 `dir()` 반환값을 커스터마이징 할 수 있습니다. `plugins/__init__.py`에서 이 함수는 모든 플러그인을 임포트한 뒤 플러그인들의 이름을 나열합니다.
 
 ```python
 def __dir__():
@@ -600,26 +602,62 @@ Now!
 
 `__annotations__` 딕셔너리는 절대로 수정되지 않으므로 어노테이션을 사용할 때마다 평가해야합니다.
 
-
 ## 시간 정밀도
 
 
 
 ## 기타 멋진 기능들
 
-
+지금까지 Python 3.7에 새롭게 추가된 주요 기능들에 대해서 살펴보았습니다. 그러나 이 외에도 다른 멋진 기능들이 많이 추가되었습니다. 이 섹션에서는 그 중 몇 가지 기능들에 대해서 간단히 살펴보겠습니다.
 
 ### 딕셔너리 순서 보장
 
+Python 3.6의 CPython 구현체에는 순서를 가진 딕셔너리가 구현되어 있습니다. ([PyPy](http://pypy.org/)에도 있습니다) 즉, 딕셔너리의 항목들은 삽입된 순서대로 순회됩니다. 첫번째 예제에서는 Python 3.5를, 두번째 예제에서는 Python 3.6을 사용했습니다.
 
+```python
+>>> {"one": 1, "two": 2, "three": 3}  # Python <= 3.5
+{'three': 3, 'one': 1, 'two': 2}
+
+>>> {"one": 1, "two": 2, "three": 3}  # Python >= 3.6
+{'one': 1, 'two': 2, 'three': 3}
+```
+
+Python 3.6에서 이 순서는 단지 `dict` 구현체의 (훌륭한) 결과일뿐입니다. 그러나 Python 3.7에서는 삽입 순서를 유지하는 딕셔너리가 [언어 명세](https://mail.python.org/pipermail/python-dev/2017-December/151283.html)의 일부로 들어갔습니다. 따라서 이 기능은 Python 3.7 이상 (혹은 CPython 3.6 이상)을 지원하는 프로젝트에서만 사용할 수 있습니다.
 
 ### "async" 및 "await" 키워드 추가
 
+Python 3.5에서는 [async 및 await 문법을 활용한 코루틴](https://www.python.org/dev/peps/pep-0492/)이 소개되었습니다. 이전 버전과의 호환성 문제를 피하기위해 `async`와 `await`는 예약된 키워드 목록에 추가되지 않았습니다. 즉, `async` 및 `await`라는 이름을 가진 변수나 함수를 정의할 수 있었습니다.
 
+Python 3.7에서는 키워드로 추가되었기 때문에 이는 더 이상 불가능합니다.
+
+```python
+>>> async = 1
+  File "<stdin>", line 1
+    async = 1
+          ^
+SyntaxError: invalid syntax
+
+>>> def await():
+  File "<stdin>", line 1
+    def await():
+            ^
+SyntaxError: invalid syntax
+```
 
 ### 새로워진 "asyncio"
 
+이벤트 루프, 코루틴 및 futures를 사용하여 현대적인 방식으로 동시성을 처리하기 위한 `asyncio` 표준 라이브러리는 Python 3.4에서 추가되었습니다. 이에 대한 자세한 내용은 [이 글](https://hackernoon.com/asyncio-for-the-working-python-developer-5c468e6e2e8e)을 참고하세요.
 
+Python 3.7에서 `asyncio` 모듈에는 많은 새로운 기능, 컨텍스트 변수 ([아래](#context-variables) 참고) 지원 및 성능 향상을 포함한 [주요 변경 사항들](https://docs.python.org/3.7/whatsnew/3.7.html#asyncio)이 추가되었습니다. 그 중 특히 눈여겨 볼만한건, 동기 코드에서의 코루틴 호출을 단순화한 `asyncio.run()`입니다. `asyncio.run()` 을 사용하면 이벤트 루프를 명시적으로 생성할 필요가 없습니다. 이제 비동기 Hello World 프로그램은 다음과 같이 작성할 수 있습니다.
+
+```python
+import asyncio
+
+async def hello_world():
+    print("Hello World!")
+
+asyncio.run(hello_world())
+```
 
 ### 컨텍스트 변수
 
@@ -655,14 +693,88 @@ for ctx in reversed(contexts):
 
 ### "Importlib.resources"로 데이터 파일 불러오기
 
+Python 프로젝트를 패키징 할 때 마주하는 문제중 하나는 프로젝트에 필요한 데이터 파일과 같은 프로젝트 리소스를 어떻게 처리할지 결정하는 일입니다. 다음은 흔히 사용되는 몇 가지 옵션들입니다.
 
+- 데이터 파일 경로 하드코딩.
+- 데이터 파일을 패키지 안에 넣고 `__file__`로 불러오기.
+- [setuptools.pkg_resources](https://setuptools.readthedocs.io/en/latest/pkg_resources.html)를 사용하여 데이터 파일 리소스에 접근하기.
+
+이들 각각에는 단점이 있습니다. 첫번째 옵션은 이식성이 떨어지며, `__file__`은 이식성은 뛰어나지만 설치된 Python 프로젝트가 zip으로 끝나 `__file__` 속성이 없을 수도 있습니다. 그리고 세번째 옵션은 상당히 느립니다.
+
+더 나은 방법은 표준 라이브러리에 새로 추가된 [importlib.resources](https://docs.python.org/3.7/library/importlib.html#module-importlib.resources) 모듈을 사용하는 것입니다. 이 모듈은 Python의 기존 임포트 기능을 사용하여 데이터 파일을 임포트합니다. 다음과 같이 Python 패키지 내부에 리소스가 있다고 가정해봅시다.
+
+```
+data/
+│
+├── alice_in_wonderland.txt
+└── __init__.py
+```
+
+`data` 디렉터리는 [Python 패키지](https://realpython.com/python-modules-packages/)이어야함에 주목하세요. 즉, 이 디렉터리는 `__init__.py__` 파일 (빈 파일이어도 됨)을 포함해야합니다. 그 다음엔 다음과 같이 `alice_in_wonderland.txt` 파일을 읽어올 수 있습니다.
+
+```python
+>>> from importlib import resources
+>>> with resources.open_text("data", "alice_in_wonderland.txt") as fid:
+...     alice = fid.readlines()
+... 
+>>> print("".join(alice[:7]))
+CHAPTER I. Down the Rabbit-Hole
+
+Alice was beginning to get very tired of sitting by her sister on the
+bank, and of having nothing to do: once or twice she had peeped into the
+book her sister was reading, but it had no pictures or conversations in
+it, ‘and what is the use of a book,’ thought Alice ‘without pictures or
+conversations?’
+```
+
+파일을 바이너리 모드로 읽기 위해선 유사 함수인 [resources.open_binary](https://docs.python.org/3.7/library/importlib.html#importlib.resources.open_binary)를 사용하면 됩니다. 이전에 [모듈 속성으로 정의하는 플러그인 예제](#모듈-속성-커스터마이징)에서는 사용 가능한 플러그인을 검색하기 위해 `importlib.resources`의 `resources.contents()`를 사용했었습니다. 좀 더 자세한 내용은 [Barry Warsaw’s PyCon 2018 토크](https://www.youtube.com/watch?v=ZsGFU2qh73E)를 참고하세요.
+
+[백포트](https://pypi.org/project/importlib_resources/)를 통해 Python 2.7과 Python 3.4+에서도 `importlib.resources`를 사용할 수 있습니다. [pkg_resources에서 importlib.resources로 마이그레이션 하는 방법에 대한 가이드](http://importlib-resources.readthedocs.io/en/latest/migration.html)도 있습니다.
 
 ### 개발자를 위한 트릭
 
+Python 3.7에는 개발자를 위한 기능들도 몇 가지 추가되었습니다. 여러분은 [이미 새로 추가된 내장 breakpoint()를 살펴본 적이 있습니다](#breakpoint-내장-함수-지원). 추가로 Python 인터프리터에 몇 가지 새로운 [-X 커맨드라인 옵션](https://docs.python.org/3.7/using/cmdline.html#id5)이 추가되었습니다.
 
+`-X importtime` 옵션을 사용하면 스크립트에서 임포트에 소요되는 시간을 쉽게 확인해 볼 수 있습니다.
+
+```shell
+$ python3.7 -X importtime my_script.py
+import time: self [us] | cumulative | imported package
+import time:      2607 |       2607 | _frozen_importlib_external
+...
+import time:       844 |      28866 |   importlib.resources
+import time:       404 |      30434 | plugins
+```
+
+`cumulative` 열은 임포트할 때 소요된 누적 시간을 마이크로초로 보여줍니다. 이 예제에서는 `plugins` 임포트시 약 0.03초가 소요되었으며 `importlib.resources`를 임포트하는데 가장 많은 시간이 소요되었습니다. `self` 열은 중첩을 제외한 단일 임포트 시간을 보여줍니다.
+
+`-X dev`를 사용하면 "개발 모드"를 활성화 할 수 있습니다. 개발모드에서는 기본적으로 특정 디버깅 기능과 병목 구간으로 간주되는 런타임 검사 기능이 활성화 됩니다. 여기에는 심각한 크래시에 대한 트랙백뿐만 아니라 더 많은 경고와 디버깅 훅을 보여주는 [faulthandler](https://docs.python.org/library/faulthandler.html#module-faulthandler)의 활성화도 포함됩니다.
+
+마지막으로 `-X utf8`을 사용하면 [UTF-8 모드](https://docs.python.org/3.7/using/cmdline.html#envvar-PYTHONUTF8)를 활성화 할 수 있습니다. ([PEP 540](https://www.python.org/dev/peps/pep-0540/)을 참고하세요) 이 모드에서는 현재 로케일과는 무관하게 텍스트 인코딩에 UTF-8이 사용됩니다.
 
 ### 최적화
 
+Python의 모든 새로운 릴리스에는 최적화가 포함되어 있습니다. Python 3.7에서는 다음과 같은 중요한 성능 향상이 이루어졌습니다.
 
+- 많은 표준 라이브러리의 메서드 호출에 대한 오버헤드가 줄었습니다.
+- 메서드 호출이 최대 약 20% 정도 빨라졌습니다.
+- Python 자체의 로드 시간이 약 10%-30% 정도 줄었습니다.
+- `typing` 모듈의 임포트 시간이 약 7배 빨라졌습니다.
+
+이 외에도, 다른 많은 (특수한) 최적화가 이루어졌습니디. 자세한 내용은 [이 목록](https://docs.python.org/3.7/whatsnew/3.7.html#optimizations)을 참고하세요.
+
+이러한 모든 최적화의 결론은 [Python 3.7은 빠르다](https://speed.python.org/)는 것입니다. 간단히 말해 Python 3.7은 지금까지 릴리스된 [CPython의 가장 빠른 버전](https://hackernoon.com/which-is-the-fastest-version-of-python-2ae7c61a6b2b)입니다.
 
 ## 그래서, 업그레이드를 해야하나요?
+
+간단한 대답부터 시작하겠습니다. 여기서 본 새로운 기능들을 시험해보고 싶다면 Python 3.7을 사용해 볼 수 있습니다. [pyenv](https://github.com/pyenv/pyenv)나 [Anaconda](https://www.anaconda.com/download/)를 사용하면 여러 버전의 Python을 설치할 수 있습니다. 이를 사용하면 문제없이 Python 3.7을 설치하고 테스트 해볼 수 있습니다.
+
+자 이제 그럼 조금 더 복잡한 질문들을 해보겠습니다. 여러분의 프로덕션 환경을 Python 3.7로 업그레이드 해야합니까? 개인 프로젝트에서 Python 3.7의 새로운 기능을 사용해야하나요?
+
+분명히 주의해야할건 프로덕션 환경을 업그레이드 하기 전에는 항상 철저한 테스트를 거쳐야 한다는 것입니다. Python 3.7에 도입된 일부기능들이 기존 코드를 망가뜨릴수도 있습니다 (`async`와 `await`가 키워드로 추가되었다는점이 한 예입니다). 이미 최신 버전의 Python을 사용하고 있다면 3.7로의 업그레이드는 매우 수월할 것입니다. 조금 보수적으로 본다면 첫 유지보수 릴리스인 Python 3.7.1의 릴리스를 기다려볼 수도 있습니다. 이 릴리스는 [2018년 7월중으로 예상됩니다](https://www.python.org/dev/peps/pep-0537/#maintenance-releases).
+
+여러분의 프로젝트가 3.7에서만 동작해야한다고 주장하기는 조금 어렵습니다. Python 3.7의 새로운 기능중 상당수는 Python 3.6에서 백포트로 사용할 수 있거나 (데이터 클래스, `importlib.resources`) 그저 단순한 편의 기능중 하나 (빠른 로드 및 메서드 호출 속도, 편리한 디버깅 및 `-X` 옵션)이기 때문입니다. 후자의 경우, Python 3.6 (또는 그 이하)과의 코드 호환성을 유지하면서 Python 3.7을 실행하면 사용할 수 있습니다.
+
+코드가 Python 3.7에만 의존하도록 만드는 큰 기능들로는 [모듈에서의 \_\_getattr\_\_()](#모듈-속성-커스터마이징), [타입 힌팅에서의 전방 참조](#향상된-타이핑) 및 [나노초 시간 함수](#시간-정밀도)가 있습니다. 만약 이 기능들중 어느 것이라도 정말로 필요하다면, 여러분은 계속해서 여러분의 요구사항을 충족시켜나가야 합니다. 그렇지 않다면 당분간은 Python 3.6에서 동작할 수 있도록 하는게 여러모로 유용할 것입니다.
+
+업그레이드 할 때 숙지해야할 자세한 내용들은 [Python 3.7 포팅 가이드](https://docs.python.org/3.7/whatsnew/3.7.html#porting-to-python-37)를 참고하세요.
