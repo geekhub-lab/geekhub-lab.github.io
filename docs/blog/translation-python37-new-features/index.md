@@ -608,7 +608,7 @@ Now!
 
 ## 기타 멋진 기능들
 
-지금까지 Python 3.7에 새롭게 추가된 주요 기능들에 대해서 살펴보았습니다. 그러나 이 외에도 다른 멋진 기능들이 많이 추가되었습니다. 이 섹션에서는 그 중 몇 가지 기능들에 대해서 간단히 살펴보겠습니다.
+지금까지 Python 3.7에 새롭게 추가된 주요 기능들에 대해서 살펴보았습니다. 그러나 이 외에도 다른 멋진 기능들이 많이 추가되었습니다. 이 섹션에서는 그중 몇 가지 기능들에 대해서 간단히 살펴보겠습니다.
 
 ### 딕셔너리 순서 보장
 
@@ -648,7 +648,7 @@ SyntaxError: invalid syntax
 
 이벤트 루프, 코루틴 및 futures를 사용하여 현대적인 방식으로 동시성을 처리하기 위한 `asyncio` 표준 라이브러리는 Python 3.4에서 추가되었습니다. 이에 대한 자세한 내용은 [이 글](https://hackernoon.com/asyncio-for-the-working-python-developer-5c468e6e2e8e)을 참고하세요.
 
-Python 3.7에서 `asyncio` 모듈에는 많은 새로운 기능, 컨텍스트 변수 ([아래](#context-variables) 참고) 지원 및 성능 향상을 포함한 [주요 변경 사항들](https://docs.python.org/3.7/whatsnew/3.7.html#asyncio)이 추가되었습니다. 그 중 특히 눈여겨 볼만한건, 동기 코드에서의 코루틴 호출을 단순화한 `asyncio.run()`입니다. `asyncio.run()` 을 사용하면 이벤트 루프를 명시적으로 생성할 필요가 없습니다. 이제 비동기 Hello World 프로그램은 다음과 같이 작성할 수 있습니다.
+Python 3.7에서 `asyncio` 모듈에는 많은 새로운 기능, 컨텍스트 변수 ([아래](#context-variables) 참고) 지원 및 성능 향상을 포함한 [주요 변경 사항들](https://docs.python.org/3.7/whatsnew/3.7.html#asyncio)이 추가되었습니다. 그중 특히 눈여겨 볼만한건, 동기 코드에서의 코루틴 호출을 단순화한 `asyncio.run()`입니다. `asyncio.run()` 을 사용하면 이벤트 루프를 명시적으로 생성할 필요가 없습니다. 이제 비동기 Hello World 프로그램은 다음과 같이 작성할 수 있습니다.
 
 ```python
 import asyncio
