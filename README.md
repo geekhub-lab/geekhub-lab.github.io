@@ -2,7 +2,7 @@
 
 [![CircleCI](https://circleci.com/gh/geekhub-lab/geekhub-lab.github.io/tree/deploy.svg?style=svg)](https://circleci.com/gh/geekhub-lab/geekhub-lab.github.io/tree/deploy)
 
-http://geekhub.co.kr/
+https://geekhub.co.kr/
 
 ## Setup
 
