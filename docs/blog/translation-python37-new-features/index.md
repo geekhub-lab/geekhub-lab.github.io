@@ -106,7 +106,7 @@ In [1]: print(e / f)
 0.0
 ```
 
-또한 자체 함수를 만들어 `breakpoint()`에서 호출되도록 할수도 있습니다. 다음 코드는 지역 스코프의 모든 변수들을 출력합니다. 이 코드를 `bp_utils.py` 파일에 추가해봅시다.
+또한 자체 함수를 만들어 `breakpoint()`에서 호출되도록 할 수도 있습니다. 다음 코드는 지역 스코프의 모든 변수들을 출력합니다. 이 코드를 `bp_utils.py` 파일에 추가해봅시다.
 
 ```python
 from pprint import pprint
@@ -303,7 +303,7 @@ A gammavariate random value: 2.8017715125270618
 
 Python 3.7 이전까지는 모듈 속성을 커스터마이징하는 게 쉽지 않았지만, [PEP 562](https://www.python.org/dev/peps/pep-0562/)를 통해 모듈에서 사용할 수 있는 `__dir__()` 함수와 함께 `__getattr__()`가 도입되었습니다. `__dir__()` 특수 함수를 사용하면 [모듈의 dir()](https://realpython.com/python-modules-packages/#the-dir-function) 호출 결과를 커스터마이징 할 수 있습니다.
 
-PEP 자체는 이 함수들을 사용할 수 있는 몇 가지 예시들을 제공합니다. 여기에는 함수에 대한 중단(deprecation) 경고와 무거운 서브모듈의 지연 로딩(Lazy loading)이 포함됩니다. 아래 예제에서는 모듈에 함수를 동적으로 추가할 수 있는 플러그인 시스템을 만들어 볼 것 입니다. 이 예제는 Python의 패키지 시스템을 활용합니다. 패키지에 대한 자세한 내용은 [이 글](https://realpython.com/python-modules-packages/)을 참고하세요.
+PEP 자체는 이 함수들을 사용할 수 있는 몇 가지 예시들을 제공합니다. 여기에는 함수에 대한 중단(Deprecation) 경고와 무거운 서브모듈의 지연 로딩(Lazy loading)이 포함됩니다. 아래 예제에서는 모듈에 함수를 동적으로 추가할 수 있는 플러그인 시스템을 만들어 볼 것 입니다. 이 예제는 Python의 패키지 시스템을 활용합니다. 패키지에 대한 자세한 내용은 [이 글](https://realpython.com/python-modules-packages/)을 참고하세요.
 
 `plugins`라는 디렉터리를 만든 뒤, `plugins/__init__.py` 파일에 다음 코드를 추가해봅시다.
 
@@ -472,18 +472,18 @@ def __dir__():
 ## 향상된 타이핑
 
 타입 힌팅과 어노테이션은 Python 3 릴리스 전체에서 꾸준히 개발되어 왔습니다.
-파이썬의 [타이핑 시스템](https://www.youtube.com/watch?v=2xWhaALHTvU)은 이제 꽤 안정적입니다.
+Python의 [타이핑 시스템](https://www.youtube.com/watch?v=2xWhaALHTvU)은 이제 꽤 안정적입니다.
 그럼에도 불구하고 Python 3.7은 성능 향상, 코어 지원 및 전방 참조(forward references)와 같은 몇 가지 개선 사항을 제공합니다.
 
-파이썬은 런타임 시에 (명시적으로 [enforce](https://pypi.org/project/enforce/)와 같은 패키지를 사용하지 않는 한) 타입 검사를 하지 않습니다.
+Python은 런타임 시에 (명시적으로 [enforce](https://pypi.org/project/enforce/)와 같은 패키지를 사용하지 않는 한) 타입 검사를 하지 않습니다.
 따라서 코드에 타입 힌트를 추가해도 성능에는 영향을 미치지 않습니다.
 
 불행히도, 대부분의 타입 힌트가 `typing` 모듈을 필요로 하기 때문에 성능에 100% 영향이 없지는 않습니다.
 `typing` 모듈은 표준 라이브러리에서 [가장 느린 모듈](https://www.python.org/dev/peps/pep-0560/#performance) 중 하나입니다.
-[PEP 560](https://www.python.org/dev/peps/pep-0560/)은 `typing` 모듈의 속도를 대폭 향상시키는 Python 3.7에서 타이핑에 대한 코어 지원을 추가합니다.
-이것에 대한 세부 사항은 일반적으로 알 필요가 없습니다. 느긋하게 누워서 향상된 성능을 즐기세요.
+[PEP 560](https://www.python.org/dev/peps/pep-0560/)은 Python 3.7에서 `typing` 모듈의 속도를 대폭 향상시키는 코어 지원을 추가합니다.
+사용하는 입장에서 이에 대한 세부 사항을 알 필요는 없습니다. 느긋하게 누워서 향상된 성능을 즐기세요.
 
-파이썬의 타입 시스템은 합리적인 표현력을 지녔지만, 약간의 고통을 주는 한 가지 문제는 전방 참조(forward references)입니다.
+Python의 타입 시스템은 합리적인 표현력을 지녔지만, 약간의 고통을 주는 한 가지 문제가 있는데 바로 전방 참조(forward references)입니다.
 타입 힌트(또는 일반적으로 어노테이션)는 모듈을 가져오는 동안 평가됩니다.
 따라서 모든 이름은 사용되기 전에 정의되어 있어야합니다.
 따라서 다음은 불가능합니다:
