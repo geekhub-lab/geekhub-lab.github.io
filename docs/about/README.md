@@ -1,4 +1,4 @@
-# Geekhub?
+# GeekHub?
 
 **괴짜들이 모이면 새로운 가치가 탄생한다.**
 
@@ -23,7 +23,7 @@
 * 이준범 (Beomi): [Github](https://github.com/Beomi)
 * 유태권
 * 윤지은 
-* 헤일리 (hailey): [Github](https://github.com/foxwavez)
+* 이희진 (Hailey): [Github](https://github.com/foxwavez)
 
 ## Projects
 
