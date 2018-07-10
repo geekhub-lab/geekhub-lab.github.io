@@ -603,8 +603,75 @@ Now!
 `__annotations__` 딕셔너리는 절대로 수정되지 않으므로 어노테이션을 사용할 때마다 평가해야합니다.
 
 ## 시간 정밀도
+Python 3.7에서는 [PEP 564](https://www.python.org/dev/peps/pep-0564/)에 설명된 [time](https://docs.python.org/3/library/time.html) 모듈의 새로운 함수가 있습니다.
 
+주목할만한 6개의 함수를 소개합니다.
 
+- **clock_gettime_ns() :** 지정된 클럭의 시간 값을 반환합니다.
+- **clock_settime_ns() :** 지정된 클럭의 시간 값을 설정합니다.
+- **monotinic_ns() :** 거꾸로 돌릴 수 없는(가령, 서머타임 때문에 시간이 앞당겨지는 경우가 있음) 단조 증가 클럭의 시간을 나노초 단위로 반환합니다.
+- **perf_counter_ns() :** 퍼포먼스 카운터의 값을 반환합니다. 클럭은 특별히 짧은 시간을 측정하기 위해 고안되었습니다.
+- **process_time_ns() :** 현재 프로세스(sleep 시간은 포함하지 않습니다.)의 시스템 및 유저 CPU 시간의 합을 나노초 단위로 반환합니다.
+- **time_ns() :** 1970년 1월 1일부터 현재까지의 시간을 나노초 단위로 반환합니다.
+
+어떤 의미에서는 딱히 새로울 게 없습니다.
+각 함수는 접미사 `_ns`가 없는 기존의 함수들과 비슷합니다.
+차이점으로 기존 함수는 초 단위를 `float`형으로 리턴하지만, 새 함수는 나노초 단위를 `int`형으로 반환합니다.
+대부분의 어플리케이션에서는 새로운 나노초 함수와 기존 시간 관련 함수의 차이가 와닿지 않을 수 있습니다.
+그러나 새 함수는 `float`형 대신 `int`형을 사용하기 때문에 더 쉽게 다룰 수 있습니다.
+부동 소수점(Floating point) 숫자들은 [태생적으로 부정확](https://docs.python.org/3/tutorial/floatingpoint.html)합니다.
+
+```python
+>>> 0.1 + 0.1 + 0.1
+0.30000000000000004
+
+>>> 0.1 + 0.1 + 0.1 == 0.3
+False
+```
+
+이것은 Python의 문제가 아니라 컴퓨터가 유한한 비트 수를 사용해 무한 소수를 표현하는 과정에서 오는 결과입니다.
+Python의 `float`형은 [IEEE 754 표준](https://en.wikipedia.org/wiki/IEEE_754)을 따르고 53개의 유효비트를 사용합니다.
+104일보다 많은 시간(2의 53승 혹은 [9000조 나노초](https://en.wikipedia.org/wiki/Names_of_large_numbers)은 `float`형으로 나노초의 정밀도를 표현할 수 없습니다.
+그에 반해 Python의 `int`형 숫자는 시간값과 무관하게 나노초의 정밀도를 가집니다.
+
+예시와 같이 `time.time()`은 1970년 1월 1일부터 흐른 시간을 초 단위로 반환합니다.
+이 숫자는 꽤 크며 정확성은 마이크로초 수준입니다.
+이 함수는 `_ns` 버전에서 엄청난 개선을 이뤄냈습니다.
+`time.time_ns()`의 해상도는 `time.time()`보다 [약 3배 이상](https://www.python.org/dev/peps/pep-0564/#analysis) 향상되었습니다.
+
+```tip
+그런데 나노초가 뭔가요?
+기술적으로는 10억분의 1 혹은 1e-9 초를 말합니다.
+와닿는 숫자는 아닙니다.
+더 나은 설명은 [Grace Hopper](https://en.wikipedia.org/wiki/Grace_Hopper#Anecdotes)의 [나노초 설명 영상](https://www.youtube.com/watch?v=JEpsKnWZrJ8)을 참조하세요.
+```
+
+여담으로, 나노초 정밀도의 시간을 다루는 경우 `datetime` 표준 라이브러리는 사용하기 어렵습니다.
+`datetime`은 마이크로초 단위로만 작동하기 때문입니다.
+
+```python
+>>> from datetime import datetime, timedelta
+>>> datetime(2018, 6, 27) + timedelta(seconds=1e-6)
+datetime.datetime(2018, 6, 27, 0, 0, 0, 1)
+
+>>> datetime(2018, 6, 27) + timedelta(seconds=1e-9)
+datetime.datetime(2018, 6, 27, 0, 0)
+```
+
+대신 [`astropy` 프로젝트](http://www.astropy.org/)를 사용할 수 있습니다.
+[`astropy.time`](http://docs.astropy.org/en/stable/time/) 패키지는 우주의 나이 이상의 시간을 두 개의 `float`형 객체를 사용하여 나노초 이하 정밀도로 datetime을 표현합니다.
+
+```python
+>>> from astropy.time import Time, TimeDelta
+>>> Time("2018-06-27")
+<Time object: scale='utc' format='iso' value=2018-06-27 00:00:00.000>
+
+>>> t = Time("2018-06-27") + TimeDelta(1e-9, format="sec")
+>>> (t - Time("2018-06-27")).sec
+9.976020010071807e-10
+```
+
+`astropy`의 마지막 버전은 Python 3.5 이후 버전에서 사용 가능합니다.
 
 ## 기타 멋진 기능들
 
