@@ -12,18 +12,18 @@
 
 *가나다순*
 
-* 강명서 (leop0ld): [Github](https://github.com/leop0ld)
-* 권민재 (mingrammer): [Github](https://github.com/mingrammer)
+* 강명서 (leop0ld): [GitHub](https://github.com/leop0ld)
+* 권민재 (mingrammer): [GitHub](https://github.com/mingrammer)
 * 김성훈
-* 김지윤 (BlizzardBlue): [Github](https://github.com/BlizzardBlue)
+* 김지윤 (BlizzardBlue): [GitHub](https://github.com/BlizzardBlue)
 * 김정화
-* 김지형 (roamgom): [Github](https://github.com/roamgom)
-* 박상우 (Bill-Park): [Github](https://github.com/Bill-Park)
+* 김지형 (roamgom): [GitHub](https://github.com/roamgom)
+* 박상우 (Bill-Park): [GitHub](https://github.com/Bill-Park)
 * 박형민
-* 이준범 (Beomi): [Github](https://github.com/Beomi)
+* 이준범 (Beomi): [GitHub](https://github.com/Beomi)
 * 유태권
 * 윤지은 
-* 이희진 (Hailey): [Github](https://github.com/foxwavez)
+* 이희진 (Hailey): [GitHub](https://github.com/foxwavez)
 
 ## Projects
 
