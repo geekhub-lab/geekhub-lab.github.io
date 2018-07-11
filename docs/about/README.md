@@ -12,7 +12,7 @@
 
 *가나다순*
 
-* 강명서 (leop0ld): [GitHub](https://github.com/leop0ld)
+* 강명서 (leop0ld): [GitHub](https://github.com/leop0ld), [Blog](https://blog.leop0ld.org), [Facebook](https://fb.me/leop0ld), [Twitter](https://twitter.com/__leop0ld__)
 * 권민재 (mingrammer): [GitHub](https://github.com/mingrammer), [Blog](https://mingrammer.com), [Facebook](https://www.facebook.com/mingrammer), [Twitter](https://twitter.com/mingrammer)
 * 김성훈
 * 김지윤 (BlizzardBlue): [GitHub](https://github.com/BlizzardBlue), [Facebook](https://www.facebook.com/jiyunkim0403), [Photography](https://photo.jiyun.io)
