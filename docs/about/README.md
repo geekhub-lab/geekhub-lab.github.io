@@ -23,7 +23,6 @@
 * 이준범 (Beomi): [GitHub](https://github.com/Beomi)
 * 유태권
 * 윤지은 
-* 이희진 (Hailey): [GitHub](https://github.com/foxwavez)
 
 ## Projects
 
